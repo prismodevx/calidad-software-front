@@ -18,7 +18,7 @@
         :breakpoint="500"
         bordered
       >
-        
+
         <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
           <q-list>
             <q-item :to="'/'" clickable v-ripple>
@@ -39,7 +39,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item :to="'/areas'" clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="star" />
               </q-item-section>
@@ -65,12 +65,12 @@
             </q-item>
           </q-list>
         </q-scroll-area>
-        
+
       </q-drawer>
 
       <q-page-container>
-        <q-page style="padding: 30px;">
-          <router-view style="margin: 0; border: 2px solid red;"/>
+        <q-page style="padding: 48px;">
+          <router-view style="margin: 0;"/>
         </q-page>
       </q-page-container>
     </q-layout>
