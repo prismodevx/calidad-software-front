@@ -18,10 +18,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/areas/views/Areas.vue')
       }
     ],
+    meta: { requiresAuth: true },
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: '/login',
+    component: () => import('pages/login/views/Form.vue'),
+  },
+
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
