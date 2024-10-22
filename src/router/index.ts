@@ -33,7 +33,8 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach((to, from, next) => {
-    if(to.meta.requiresAuth) {
+    const isAuthenticated = !!localStorage.getItem('token');
+    if(to.meta.requiresAuth && !isAuthenticated) {
       next('/login');
     }
     else {

@@ -9,10 +9,16 @@
           <div class="row q-px-lg q-py-xl q-col-gutter-lg">
             <div class="col-12">
               <q-input
+                v-model="username"
                 dense
                 outlined
                 placeholder="Escribe tu nombre de usuario"
                 type="text"
+                :rules="[
+                  (v: any) => !!v || 'Nombre de usuario requerido',
+                ]"
+                no-error-icon
+                hide-bottom-space
               >
                 <template v-slot:prepend>
                   <q-icon name="person" />
@@ -28,6 +34,11 @@
                 placeholder="Escribe tu contrasena"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 class="q-pa-none"
+                :rules="[
+                  (v: any) => !!v || 'Password requerida',
+                ]"
+                no-error-icon
+                hide-bottom-space
               >
                 <template v-slot:prepend>
                   <q-icon name="lock" />
@@ -53,6 +64,8 @@
                 class="bg-secondary text-white"
                 label="Iniciar sesion"
                 style="width: 100%"
+                :loading="btnIsLoading"
+                @click="login"
               >
 
               </q-btn>
@@ -66,12 +79,40 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import axios from 'axios'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const isPasswordVisible = ref<boolean>(false);
 
+const username = ref<string>('');
 const password = ref<string>('');
 
+const btnIsLoading = ref<boolean>(false);
 
+const login = async () => {
+  try {
+    btnIsLoading.value = true;
+    const response = await axios.post('http://localhost:8000/api/login', {
+      usuario: username.value,
+      password: password.value,
+    });
+
+    console.log(response);
+
+
+    const { access_token } = response.data;
+    //
+    localStorage.setItem('token', access_token);
+
+    await router.push('/');
+  } catch (e) {
+    console.log('error: ', e);
+  } finally {
+    btnIsLoading.value = false;
+  }
+};
 
 </script>
 
