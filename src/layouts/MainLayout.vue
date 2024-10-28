@@ -21,48 +21,56 @@
 
         <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
           <q-list>
-            <q-item :to="'/'" clickable v-ripple>
+            <q-item v-for="link of links" :key="link.name" :to="link.url" clickable v-ripple>
               <q-item-section avatar>
-                <q-icon name="inbox" />
+                <q-icon :name="link.icon" />
               </q-item-section>
               <q-item-section>
-                Dashboard
+                {{ link.name }}
               </q-item-section>
             </q-item>
+<!--            <q-item :to="'/'" clickable v-ripple>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-icon name="inbox" />-->
+<!--              </q-item-section>-->
+<!--              <q-item-section>-->
+<!--                Dashboard-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
 
-            <q-item :to="'/empleados'" active clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="star" />
-              </q-item-section>
-              <q-item-section>
-                Empleados
-              </q-item-section>
-            </q-item>
+<!--            <q-item :to="'/empleados'" active clickable v-ripple>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-icon name="star" />-->
+<!--              </q-item-section>-->
+<!--              <q-item-section>-->
+<!--                Empleados-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
 
-            <q-item :to="'/areas'" clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="star" />
-              </q-item-section>
-              <q-item-section>
-                Areas
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="star" />
-              </q-item-section>
-              <q-item-section>
-                Cargos
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="star" />
-              </q-item-section>
-              <q-item-section>
-                Permisos
-              </q-item-section>
-            </q-item>
+<!--            <q-item :to="'/areas'" clickable v-ripple>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-icon name="star" />-->
+<!--              </q-item-section>-->
+<!--              <q-item-section>-->
+<!--                Areas-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
+<!--            <q-item clickable v-ripple>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-icon name="star" />-->
+<!--              </q-item-section>-->
+<!--              <q-item-section>-->
+<!--                Cargos-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
+<!--            <q-item clickable v-ripple>-->
+<!--              <q-item-section avatar>-->
+<!--                <q-icon name="star" />-->
+<!--              </q-item-section>-->
+<!--              <q-item-section>-->
+<!--                Permisos-->
+<!--              </q-item-section>-->
+<!--            </q-item>-->
           </q-list>
         </q-scroll-area>
 
@@ -88,6 +96,28 @@ import { ref } from 'vue';
 const drawer = ref<boolean>(false);
 const miniState = ref<boolean>(true);
 
+const links = [
+  {
+    url: '/',
+    name: 'Dashboard',
+    icon: 'dashboard'
+  },
+  {
+    url: '/empleados',
+    name: 'Empleados',
+    icon: 'groups'
+  },
+  {
+    url: '/areas',
+    name: 'Areas',
+    icon: 'layers'
+  },
+  {
+    url: '/cargos',
+    name: 'Cargos',
+    icon: 'work'
+  }
+]
 
 // import { ref } from 'vue';
 // import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
