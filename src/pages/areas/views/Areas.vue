@@ -37,21 +37,21 @@
 import Table from '../../../components/Table.vue'
 import SelectSingle from 'components/SelectSingle.vue';
 import SelectMultiple from 'components/SelectMultiple.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const optionsAll = ref<Array<any>>([
-  {
-    value: 1,
-    label: 'opc'
-  },
-  {
-    value: 2,
-    label: 'Opcion 2'
-  },
-  {
-    value: 3,
-    label: 'Opcion 1'
-  },
+  // {
+  //   value: 1,
+  //   label: 'opc'
+  // },
+  // {
+  //   value: 2,
+  //   label: 'Opcion 2'
+  // },
+  // {
+  //   value: 3,
+  //   label: 'Opcion 1'
+  // },
   // {
   //   value: 4,
   //   label: 'opc'
@@ -92,6 +92,40 @@ const optionsAll = ref<Array<any>>([
 
 const select = ref<any>(null);
 const selectMultiple = ref<Array<any>>([]);
+
+onMounted(() => {
+  setTimeout(() => {
+    optionsAll.value = [
+      {
+        value: 1,
+        label: 'opc'
+      },
+      {
+        value: 2,
+        label: 'Opcion 2'
+      },
+      {
+        value: 3,
+        label: 'Opcion 1'
+      },
+    ];
+
+    selectMultiple.value = [
+      {
+        value: 1,
+        label: 'opc'
+      },
+      {
+        value: 2,
+        label: 'Opcion 2'
+      },
+      {
+        value: 3,
+        label: 'Opcion 1'
+      },
+    ];
+  }, 1000);
+});
 </script>
 
 <style scoped lang="sass">

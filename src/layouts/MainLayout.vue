@@ -2,7 +2,7 @@
   <q-layout view="hHh Lpr lff">
       <q-header>
         <q-toolbar>
-          <q-toolbar-title>Calidad de Software</q-toolbar-title>
+          <q-toolbar-title>Gestion de RRHH</q-toolbar-title>
         </q-toolbar>
       </q-header>
 

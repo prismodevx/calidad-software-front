@@ -88,6 +88,8 @@ const inputSearch = ref<string>('');
 /****************************************************************************/
 /*                              COMPUTED                                    */
 /****************************************************************************/
+// opciones filtradas en base al props.options
+// importante, aqui se realiza la busqueda segun el input del usuario
 const optionsFiltered = computed(() => {
   const search = inputSearch.value.trim().toLowerCase();
   return props.options.filter((opt: any) => opt.label.trim().toLowerCase().includes(search));
@@ -96,6 +98,7 @@ const optionsFiltered = computed(() => {
 /****************************************************************************/
 /*                             METHODS                                      */
 /****************************************************************************/
+// limpiar el input de busqueda
 const clearInputSearch = () => {
   inputSearch.value = '';
 };
