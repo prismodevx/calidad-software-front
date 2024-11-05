@@ -1,87 +1,93 @@
 <template>
-  <q-layout view="hHh Lpr lff">
-      <q-header>
-        <q-toolbar>
-          <q-toolbar-title>Gestion de RRHH</q-toolbar-title>
-        </q-toolbar>
-      </q-header>
+  <q-layout view="lHh Lpr lFf">
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+    >
+      <div class="row q-py-lg">
+        <div class="col-12 flex flex-center">
+          <q-avatar size="100px">
+            <img :src="userImg">
+          </q-avatar>
+        </div>
+        <div class="col-12 flex column flex-center">
+          <div class="text-grey-9 text-weight-bold text-h6">Username</div>
+          <div class="text-grey-6 text-weight-medium text-subtitle1">email@account.com</div>
+        </div>
+      </div>
+      <q-separator/>
+      <q-list>
+        <q-item
+          clickable
+          v-ripple
+        >
+          <q-item-section avatar>
+            <q-icon size="sm" class="text-grey-6" name="manage_accounts"/>
+          </q-item-section>
+          <q-item-section class="text-weight-medium text-grey-8">Roles</q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          v-ripple
+          href="/areas"
+        >
+          <q-item-section avatar>
+            <q-icon size="sm" class="text-grey-6" name="account_balance"/>
+          </q-item-section>
+          <q-item-section class="text-weight-medium text-grey-8">Areas</q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          v-ripple
+        >
+          <q-item-section avatar>
+            <q-icon size="sm" class="text-grey-6" name="groups"/>
+          </q-item-section>
+          <q-item-section class="text-weight-medium text-grey-8">Trabajadores</q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          v-ripple
+        >
+          <q-item-section avatar>
+            <q-icon size="sm" class="text-grey-6" name="topic"/>
+          </q-item-section>
+          <q-item-section class="text-weight-medium text-grey-8">Cargos</q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          v-ripple
+        >
+          <q-item-section avatar>
+            <q-icon size="sm" class="text-grey-6" name="settings"/>
+          </q-item-section>
+          <q-item-section class="text-weight-medium text-grey-8">Configuracion</q-item-section>
+        </q-item>
+      </q-list>
+      <q-separator/>
+      <q-list>
+        <q-item
+          clickable
+          v-ripple
+          @click="logout"
+        >
+          <q-item-section avatar>
+            <q-icon size="sm" class="text-grey-6" name="logout"/>
+          </q-item-section>
+          <q-item-section class="text-weight-medium text-grey-8">Cerrar sesion</q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
 
-      <q-drawer
-        v-model="drawer"
-        show-if-above
+    <q-page-container style="background-color: #f4f4f6">
+      <q-page style="padding: 48px;">
+        <router-view style="margin: 0;"/>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 
-        :mini="miniState"
-        @mouseenter="miniState = false"
-        @mouseleave="miniState = true"
 
-        :width="200"
-        :breakpoint="500"
-        bordered
-      >
-
-        <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
-          <q-list>
-            <q-item v-for="link of links" :key="link.name" :to="link.url" clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                {{ link.name }}
-              </q-item-section>
-            </q-item>
-<!--            <q-item :to="'/'" clickable v-ripple>-->
-<!--              <q-item-section avatar>-->
-<!--                <q-icon name="inbox" />-->
-<!--              </q-item-section>-->
-<!--              <q-item-section>-->
-<!--                Dashboard-->
-<!--              </q-item-section>-->
-<!--            </q-item>-->
-
-<!--            <q-item :to="'/empleados'" active clickable v-ripple>-->
-<!--              <q-item-section avatar>-->
-<!--                <q-icon name="star" />-->
-<!--              </q-item-section>-->
-<!--              <q-item-section>-->
-<!--                Empleados-->
-<!--              </q-item-section>-->
-<!--            </q-item>-->
-
-<!--            <q-item :to="'/areas'" clickable v-ripple>-->
-<!--              <q-item-section avatar>-->
-<!--                <q-icon name="star" />-->
-<!--              </q-item-section>-->
-<!--              <q-item-section>-->
-<!--                Areas-->
-<!--              </q-item-section>-->
-<!--            </q-item>-->
-<!--            <q-item clickable v-ripple>-->
-<!--              <q-item-section avatar>-->
-<!--                <q-icon name="star" />-->
-<!--              </q-item-section>-->
-<!--              <q-item-section>-->
-<!--                Cargos-->
-<!--              </q-item-section>-->
-<!--            </q-item>-->
-<!--            <q-item clickable v-ripple>-->
-<!--              <q-item-section avatar>-->
-<!--                <q-icon name="star" />-->
-<!--              </q-item-section>-->
-<!--              <q-item-section>-->
-<!--                Permisos-->
-<!--              </q-item-section>-->
-<!--            </q-item>-->
-          </q-list>
-        </q-scroll-area>
-
-      </q-drawer>
-
-      <q-page-container>
-        <q-page style="padding: 48px;">
-          <router-view style="margin: 0;"/>
-        </q-page>
-      </q-page-container>
-    </q-layout>
 </template>
 
 <script setup lang="ts">
@@ -92,6 +98,14 @@ import { ref } from 'vue';
 // const toggleLeftDrawer = () => {
 //   leftDrawerOpen.value = !leftDrawerOpen.value;
 // };
+import userImg from '@/assets/user.png';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const logout = async () => {
+  localStorage.removeItem('token');
+  await router.push('/login');
+};
 
 const drawer = ref<boolean>(false);
 const miniState = ref<boolean>(true);
@@ -117,7 +131,7 @@ const links = [
     name: 'Cargos',
     icon: 'work'
   }
-]
+];
 
 // import { ref } from 'vue';
 // import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';

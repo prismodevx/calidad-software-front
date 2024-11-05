@@ -1,78 +1,62 @@
 <template>
   <q-table
-    :rows="rows"
-    :columns="columns"
+    :rows="props.data"
+    :columns="props.header"
     row-key="id"
     flat
-    dense
-    class="table"
+    bordered
+    style="border-radius: 6px"
   >
-    <template #top-left>
-      <q-input
-        outlined
-        dense
-        placeholder="Search"
-        class="q-mb-sm"
-      >
-        <template v-slot:prepend>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-    </template>
-    <template #top-right>
-      <q-btn
-        unelevated
-        no-caps
-        square
-        icon="export"
-        label="Export"
-      >
-      </q-btn>
+    <template v-slot:body-cell="props">
+      <q-td :props="props">
+        {{ props.value }}
+      </q-td>
+      <q-menu touch-position context-menu>
+        <q-list dense style="width: 140px">
+          <q-item
+            v-for="option in contextMenu"
+            :key="option.text"
+            clickable
+            v-close-popup
+            @click="emitAction(option.func, props.row)"
+          >
+            <q-item-section side>
+              <q-icon :name="option.icon" color="primary" size="xs" />
+            </q-item-section>
+            <q-item-section class="text-weight-medium text-grey-8">{{ option.text }}</q-item-section>
+          </q-item>
+        </q-list>
+      </q-menu>
     </template>
   </q-table>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 
 const props = defineProps({
-  rows: {
+  data: {
     type: Array,
     default: () => []
   },
-  columns: {
+  header: {
     type: Array,
+    default: () => []
+  },
+  contextMenu: {
+    type: Array,
+    default: () => []
   }
 });
 
+const emits = defineEmits(['actionContextMenu']);
 
+const emitAction = (action: string, row: any) => {
+  emits('actionContextMenu', { action, row });
+};
 </script>
 
-<style lang="sass">
-.table
-  border-radius: 0
-  thead
-
-    height: 48px !important
-    background-color: #ffffff !important // Cambia a tu color deseado
-    color: #334155 !important // Asegúrate de que el color del texto se aplique
-  th
-    border-top: 1px solid rgba(0, 0, 0, 0.12) !important
-    font-weight: 600 !important
-    font-size: 14px
-  tr
-    color: #334155 !important
-    font-weight: 500 !important
-    font-size: 14px
-    height: 48px !important
-
-.q-field--dense
-  .q-field__control,
-  .q-field__marginal
-    height: 34px
-
-.q-field--outlined
-  .q-field__control
-    border-radius: 6px
-
+<style scoped>
+.q-menu {
+  z-index: 9999; /* Ensure the menu is on top of other elements */
+}
 </style>

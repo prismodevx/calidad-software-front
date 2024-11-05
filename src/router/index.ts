@@ -33,27 +33,14 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach((to, from, next) => {
-    // const isAuthenticated = !!localStorage.getItem('token');
-    // if(to.meta.requiresAuth && !isAuthenticated) {
-    //   next('/login');
-    // }
-    // else {
+    const isAuthenticated = !!localStorage.getItem('token');
+    if(to.meta.requiresAuth && !isAuthenticated) {
+      next('/login');
+    }
+    else {
       next();
-    // }
-
-
-
-
-
-    // const isAuthenticated = !!localStorage.getItem('token');
-    // if (to.meta.requiresAuth && !isAuthenticated) {
-    //
-    //   next('/login');
-    // } else {
-    //   next();
-    // }
+    }
   });
-
 
   return Router;
 });
