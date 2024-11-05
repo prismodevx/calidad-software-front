@@ -11,58 +11,44 @@
             <img :src="userImg">
           </q-avatar>
         </div>
-        <div class="col-12 flex column flex-center">
-          <div class="text-grey-9 text-weight-bold text-h6">Username</div>
-          <div class="text-grey-6 text-weight-medium text-subtitle1">email@account.com</div>
+        <div v-show="isLoadingGeneral" class="col-12 flex column flex-center">
+          <q-skeleton type="text" width="30%" height="24px"></q-skeleton>
+          <q-skeleton type="text" width="50%" height="24px"></q-skeleton>
         </div>
+        <div v-if="!isLoadingGeneral" class="col-12 flex column flex-center">
+          <div class="text-grey-9 text-weight-bold text-h6">{{ usuarioStore.usuario }}</div>
+          <div class="text-grey-6 text-weight-medium text-subtitle1">{{ usuarioStore.email }}</div>
+        </div>
+
       </div>
       <q-separator/>
-      <q-list>
+      <q-list v-show="isLoadingGeneral">
         <q-item
           clickable
           v-ripple
+          v-for="index in 5"
+          :key="index"
+          class="flex flex-center"
         >
-          <q-item-section avatar>
-            <q-icon size="sm" class="text-grey-6" name="manage_accounts"/>
-          </q-item-section>
-          <q-item-section class="text-weight-medium text-grey-8">Roles</q-item-section>
+<!--          <q-item-section avatar>-->
+<!--            <q-icon size="sm" class="text-grey-6" :name="modulo.icon"/>-->
+<!--          </q-item-section>-->
+<!--          <q-item-section class="text-weight-medium text-grey-8">{{ modulo.nombre }}</q-item-section>-->
+          <q-skeleton type="text" width="100%" height="24px"></q-skeleton>
         </q-item>
+      </q-list>
+      <q-list v-if="!isLoadingGeneral">
         <q-item
           clickable
           v-ripple
-          href="/areas"
+          v-for="modulo in moduloStore.modulos"
+          :key="modulo.id"
+          :to="modulo.url"
         >
           <q-item-section avatar>
-            <q-icon size="sm" class="text-grey-6" name="account_balance"/>
+            <q-icon size="sm" class="text-grey-6" :name="modulo.icon"/>
           </q-item-section>
-          <q-item-section class="text-weight-medium text-grey-8">Areas</q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          v-ripple
-        >
-          <q-item-section avatar>
-            <q-icon size="sm" class="text-grey-6" name="groups"/>
-          </q-item-section>
-          <q-item-section class="text-weight-medium text-grey-8">Trabajadores</q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          v-ripple
-        >
-          <q-item-section avatar>
-            <q-icon size="sm" class="text-grey-6" name="topic"/>
-          </q-item-section>
-          <q-item-section class="text-weight-medium text-grey-8">Cargos</q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          v-ripple
-        >
-          <q-item-section avatar>
-            <q-icon size="sm" class="text-grey-6" name="settings"/>
-          </q-item-section>
-          <q-item-section class="text-weight-medium text-grey-8">Configuracion</q-item-section>
+          <q-item-section class="text-weight-medium text-grey-8">{{ modulo.nombre }}</q-item-section>
         </q-item>
       </q-list>
       <q-separator/>
@@ -91,99 +77,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
-// const leftDrawerOpen = ref<boolean>(false);
-
-// const toggleLeftDrawer = () => {
-//   leftDrawerOpen.value = !leftDrawerOpen.value;
-// };
-import userImg from '@/assets/user.png';
+import { ref, onMounted } from 'vue';
+import { Loading } from 'quasar';
 import { useRouter } from 'vue-router';
+import { useModuloStore } from '../stores/moduloStore';
+import { useUsuarioStore } from '../stores/usuarioStore';
+
 const router = useRouter();
+const moduloStore = useModuloStore();
+const usuarioStore = useUsuarioStore();
+
+const leftDrawerOpen = ref<boolean>(false);
+import userImg from '@/assets/user.png';
+const isLoadingGeneral = ref(false);
 
 const logout = async () => {
-  localStorage.removeItem('token');
+  Loading.show();
   await router.push('/login');
+  localStorage.removeItem('token');
+  usuarioStore.clearUsuario();
+  Loading.hide();
 };
 
-const drawer = ref<boolean>(false);
-const miniState = ref<boolean>(true);
 
-const links = [
-  {
-    url: '/',
-    name: 'Dashboard',
-    icon: 'dashboard'
-  },
-  {
-    url: '/empleados',
-    name: 'Empleados',
-    icon: 'groups'
-  },
-  {
-    url: '/areas',
-    name: 'Areas',
-    icon: 'layers'
-  },
-  {
-    url: '/cargos',
-    name: 'Cargos',
-    icon: 'work'
-  }
-];
-
-// import { ref } from 'vue';
-// import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
-
-// const essentialLinks: EssentialLinkProps[] = [
-//   {
-//     title: 'Docs',
-//     caption: 'quasar.dev',
-//     icon: 'school',
-//     link: 'https://quasar.dev'
-//   },
-//   {
-//     title: 'Github',
-//     caption: 'github.com/quasarframework',
-//     icon: 'code',
-//     link: 'https://github.com/quasarframework'
-//   },
-//   {
-//     title: 'Discord Chat Channel',
-//     caption: 'chat.quasar.dev',
-//     icon: 'chat',
-//     link: 'https://chat.quasar.dev'
-//   },
-//   {
-//     title: 'Forum',
-//     caption: 'forum.quasar.dev',
-//     icon: 'record_voice_over',
-//     link: 'https://forum.quasar.dev'
-//   },
-//   {
-//     title: 'Twitter',
-//     caption: '@quasarframework',
-//     icon: 'rss_feed',
-//     link: 'https://twitter.quasar.dev'
-//   },
-//   {
-//     title: 'Facebook',
-//     caption: '@QuasarFramework',
-//     icon: 'public',
-//     link: 'https://facebook.quasar.dev'
-//   },
-//   {
-//     title: 'Quasar Awesome',
-//     caption: 'Community Quasar projects',
-//     icon: 'favorite',
-//     link: 'https://awesome.quasar.dev'
-//   }
-// ];
-
-// const leftDrawerOpen = ref(false)
-
-// function toggleLeftDrawer() {
-//   leftDrawerOpen.value = !leftDrawerOpen.value
-// }
+onMounted(async () => {
+  isLoadingGeneral.value = true;
+  await moduloStore.fetchModulos();
+  usuarioStore.loadUsuario();
+  isLoadingGeneral.value = false;
+});
 </script>

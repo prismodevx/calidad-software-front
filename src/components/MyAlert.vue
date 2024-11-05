@@ -19,7 +19,7 @@
       <q-card-section class="q-pt-none q-my-sm" style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
         <Button
           :label="'Continuar'"
-          :color="props.type === 'success' ? 'primary' : 'negative'"
+          :color="props.type === 'success' ? 'positive' : 'negative'"
           :text-color="'white'"
           @click="onOKClick"
         />
@@ -32,7 +32,7 @@
 import { useDialogPluginComponent } from 'quasar'
 import Button from '../components/MyButton.vue'
 
-import successImage from '@/assets/sucess.svg';
+import successImage from '@/assets/success.svg';
 import errorImage from '@/assets/fail.svg';
 
 const props = defineProps({
