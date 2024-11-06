@@ -16,7 +16,11 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/areas/',
         component: () => import('pages/areas/views/Areas.vue')
-      }
+      },
+      {
+        path: '/roles/',
+        component: () => import('pages/roles/views/Roles.vue')
+      },
     ],
     meta: { requiresAuth: true },
   },

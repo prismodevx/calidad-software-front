@@ -67,7 +67,7 @@
     </q-drawer>
 
     <q-page-container style="background-color: #f4f4f6">
-      <q-page style="padding: 48px;">
+      <q-page style="padding: 64px 96px;">
         <router-view style="margin: 0;"/>
       </q-page>
     </q-page-container>
