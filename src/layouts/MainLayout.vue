@@ -101,9 +101,9 @@ const logout = async () => {
 
 
 onMounted(async () => {
-  isLoadingGeneral.value = true;
+  // isLoadingGeneral.value = true;
   await moduloStore.fetchModulos();
-  usuarioStore.loadUsuario();
-  isLoadingGeneral.value = false;
+  // usuarioStore.loadUsuario();
+  // isLoadingGeneral.value = false;
 });
 </script>
