@@ -436,14 +436,16 @@
     <q-input
       v-model="usuario.usuario"
       :rules="[
-        v => !!v || 'El campo es obligatorio'
+        v => !!v || 'El campo es obligatorio',
+        (v) => /^[a-zA-Z0-9_]+$/.test(v) || 'Solo se permiten letras, números y guiones bajos, sin espacios'
       ]"
     />
     <q-input
       v-model="usuario.password"
       type="password"
       :rules="[
-        v => !!v || 'El campo es obligatorio'
+        v => !!v || 'El campo es obligatorio',
+        (v) => (v && v.length >= 8) || 'La contraseña debe tener al menos 8 caracteres'
       ]"
     />
     <q-btn

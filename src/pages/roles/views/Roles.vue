@@ -218,12 +218,29 @@
           <q-input
             v-model="rol.nombre"
             label="Nombre"
+            :rules="[
+              (v) => {
+                return !!v || 'El campo es obligatorio'
+              },
+            ]"
           />
           <q-input
             v-model="rol.detalle"
             label="Detalle"
             type="textarea"
           />
+          <q-list>
+            <q-item-label caption>Selecciona los módulos:</q-item-label>
+            {{ rol }}
+            <q-item v-for="modulo in optionsAllModulo" :key="modulo.id" clickable>
+              <q-checkbox
+                v-model="rol.arrModulo"
+                :label="modulo.nombre"
+                :val="modulo.id"
+                color="primary"
+              />
+            </q-item>
+          </q-list>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn
@@ -247,7 +264,7 @@
 </template>
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref } from 'vue';
-import axios from 'axios';
+import axios, { get } from 'axios';
 import { Rol } from '../interface/Rol';
 import { Dialog, Loading, useQuasar } from 'quasar';
 const $q = useQuasar();
@@ -257,7 +274,8 @@ const dialog = ref<boolean>(false);
 const rol = ref<Rol>({
   id: 0,
   nombre: '',
-  detalle: ''
+  detalle: '',
+  arrModulo: []
 });
 const columns = ref<Array<any>>([
   {
@@ -286,7 +304,11 @@ const columns = ref<Array<any>>([
   }
 ]);
 
+const optionsAllModulo = ref<Array<any>>([]);
+
 const rows = ref<Array<any>>([]);
+
+const moduloSelected = ref<Array<any>>([]);
 
 const listRol = async () => {
   try {
@@ -304,11 +326,47 @@ const listRol = async () => {
   }
 };
 
+const getRol = async () => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response: any = await axios.get(`http://localhost:8000/api/roles/${rol.value.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+
+    if(response.data.data[0].arrModulo.length > 0) {
+      rol.value.arrModulo = response.data.data[0].arrModulo.split(',');
+    }
+  } catch (e: any) {
+    console.log(e);
+  }
+};
+
+const listModulo = async () => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response: any = await axios.get('http://localhost:8000/api/modulos', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+
+    optionsAllModulo.value = response.data.data;
+    console.log(optionsAllModulo)
+  } catch (e: any) {
+    console.log(e);
+  }
+};
+
 const cleanRol = (): Rol => {
   return {
     id: 0,
     nombre: '',
-    detalle: ''
+    detalle: '',
+    arrModulo: []
   }
 };
 
@@ -328,7 +386,7 @@ const tableBtnDelete = (item: any) => {
   });
 };
 
-const openDialog = (item: any) => {
+const openDialog = async (item: any) => {
   if (item.id === 0) {
     dialog.value = true;
     return;
@@ -337,8 +395,11 @@ const openDialog = (item: any) => {
   rol.value = {
     id: item.id,
     nombre: item.nombre,
-    detalle: item.detalle
+    detalle: item.detalle,
+    arrModulo: []
   };
+
+  await getRol();
 
   dialog.value = true;
 };
@@ -356,7 +417,8 @@ const save = async () => {
     const data = {
       id: rol.value.id,
       nombre: rol.value.nombre,
-      detalle: rol.value.detalle
+      detalle: rol.value.detalle,
+      idModuloList: rol.value.arrModulo.join(',')
     };
 
     const config = {
@@ -371,8 +433,11 @@ const save = async () => {
     if (rol.value.id === 0) {
       response = await axios.post('http://localhost:8000/api/roles', data, config);
     }
+    else {
+      response = await axios.put(`http://localhost:8000/api/roles/${rol.value.id}`, data, config);
+    }
     // edicion
-    response = await axios.put(`http://localhost:8000/api/roles/${rol.value.id}`, data, config);
+
 
     closeDialog();
     Loading.hide();
@@ -426,5 +491,6 @@ onBeforeMount(() => {
 
 onMounted(() => {
   listRol();
+  listModulo();
 });
 </script>

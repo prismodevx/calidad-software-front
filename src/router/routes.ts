@@ -10,8 +10,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/dashboard/views/Dashboard.vue')
       },
       {
-        path: '/empleados/',
-        component: () => import('pages/empleados/views/Empleados.vue')
+        path: '/trabajadores/',
+        component: () => import('pages/trabajadores/views/Trabajadores.vue'),
       },
       {
         path: '/areas/',
@@ -20,6 +20,14 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/roles/',
         component: () => import('pages/roles/views/Roles.vue')
+      },
+      {
+        path: '/usuarios/',
+        component: () => import('pages/usuarios/views/Usuarios.vue')
+      },
+      {
+        path: '/cargos/',
+        component: () => import('pages/cargos/views/Cargos.vue')
       },
     ],
     meta: { requiresAuth: true },

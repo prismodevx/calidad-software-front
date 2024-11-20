@@ -30,11 +30,11 @@ export const useModuloStore = defineStore('moduloStore', {
           localStorage.removeItem('usuario');
           localStorage.removeItem('email');
           await this.router.push('/login');
-          alert({
-            type: 'error',
-            title: 'Algo salio mal!',
-            msg: 'Ha terminado tu sesion'
-          });
+          // alert({
+          //   type: 'error',
+          //   title: 'Algo salio mal!',
+          //   msg: 'Ha terminado tu sesion'
+          // });
         }
       }
     }
